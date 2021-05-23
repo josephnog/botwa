@@ -99,14 +99,15 @@ Asena.addCommand({pattern: 'tts (.*)', fromMe: true, desc: Lang.TTS_DESC}, (asyn
     await message.client.sendMessage(message.jid,buffer, MessageType.audio, {mimetype: Mimetype.mp4Audio, ptt: true});
 }));
 
-Asena.addCommand({pattern: 'song ?(.*)' , fromMe: true, desc: Lang.SONG_DESC}, (async (message, match) => { 
+Asena.addCommand({pattern: 'song ?(.*)', fromMe: true, desc: Lang.SONG_DESC}, (async (message, match) => { 
     if (match[1] === '') return await message.client.sendMessage(message.jid,Lang.NEED_TEXT_SONG,MessageType.text);    
     let arama = await yts(match[1]);
     arama = arama.all;
     if(arama.length < 1) return await message.client.sendMessage(message.jid,Lang.NO_RESULT,MessageType.text);
-    var reply = await message.client.sendMessage(message.jid,'```Searching 🔍```',MessageType.text);
+    var reply = await message.client.sendMessage(message.jid,Lang.DOWNLOADING_SONG,MessageType.text);
 
-    let title = arama[0].title.replace(' ', '+');
+    let sname = arama[0].title.replace(' ', '+');
+    let title = 'song';
     let stream = ytdl(arama[0].videoId, {
         quality: 'highestaudio',
     });
@@ -125,30 +126,46 @@ Asena.addCommand({pattern: 'song ?(.*)' , fromMe: true, desc: Lang.SONG_DESC}, (
                     description: arama[0].description
                 });
             writer.addTag();
-
-            reply = await message.client.sendMessage(message.jid,'```Ready to play 🎧 Enjoy🎶```',MessageType.text);
-            await message.client.sendMessage(message.jid,Buffer.from(writer.arrayBuffer), MessageType.audio, {mimetype: Mimetype.mp4Audio, ptt: false});
+            var stats = fs.statSync('./' + title + '.mp3')
+            var fileSizeInBytes = stats.size;
+            var six = fileSizeInBytes / (1024*102);
+            var fileSizeInMegabytes = fileSizeInBytes / (1024*1024);
+            if (fileSizeInMegabytes >= 100 )  return await message.sendMessage('*Some error detected on audio file*');
+            console.log(fileSizeInMegabytes)
+            reply = await message.client.sendMessage(message.jid,Lang.UPLOADING_SONG,MessageType.text);
+            await message.sendMessage(fs.readFileSync('song.jpg'), MessageType.image,{mimetype: Mimetype.jpg, caption: sname})
+            await message.client.sendMessage(message.jid,Buffer.from(writer.arrayBuffer), MessageType.audio, {caption: sname, mimetype: Mimetype.mp4Audio, ptt: false});
         });
 }));
 
-Asena.addCommand({pattern: 'video ?(.*)', fromMe: true , desc: Lang.VIDEO_DESC}, (async (message, match) => { 
-    if (match[1] === '') return await message.client.sendMessage(message.jid,Lang.NEED_LINK,MessageType.text);    
+Asena.addCommand({pattern: 'video ?(.*)', fromMe: true, desc: Lang.VIDEO_DESC}, (async (message, match) => { 
+    if (match[1] === '') return await message.sendMessage(Lang.NEED_VIDEO);    
     
     try {
         var arama = await yts({videoId: ytdl.getURLVideoID(match[1])});
     } catch {
-        return await message.client.sendMessage(message.jid,Lang.NO_RESULT,MessageType.text);
+        return await message.sendMessage(Lang.NO_RESULT);
     }
 
-    var reply = await message.client.sendMessage(message.jid,'```📺 Searching```',MessageType.text);
+    var reply = await message.reply(Lang.DOWNLOADING_VIDEO);
 
     var yt = ytdl(arama.videoId, {filter: format => format.container === 'mp4' && ['720p', '480p', '360p', '240p', '144p'].map(() => true)});
     yt.pipe(fs.createWriteStream('./' + arama.videoId + '.mp4'));
 
     yt.on('end', async () => {
-        reply = await message.client.sendMessage(message.jid,'```📲 Uploading```',MessageType.text);
-        await message.client.sendMessage(message.jid,fs.readFileSync('./' + arama.videoId + '.mp4'), MessageType.video, {mimetype: Mimetype.mp4});
-}); }));
+        await reply.delete();
+        var stats = fs.statSync('./' + arama.videoId + '.mp4')
+        var fileSizeInBytes = stats.size;
+        var six = fileSizeInBytes / (1024*102);
+        var fileSizeInMegabytes = fileSizeInBytes / (1024*1024);
+        if (fileSizeInMegabytes >= 150 )  return await message.sendMessage('*Video size is higher than 150MB*');
+            console.log(fileSizeInMegabytes)
+            
+        reply = await message.reply(Lang.UPLOADING_VIDEO);
+        await message.sendMessage(fs.readFileSync('./' + arama.videoId + '.mp4'), MessageType.video, {mimetype: Mimetype.mp4, caption: "UPLOAD BY MR_JUSTIN ",thumbnail: (fs.readFileSync('./icon.jpg'))});
+        await reply.delete();
+    });
+}));
 Asena.addCommand({pattern: 'yt ?(.*)', fromMe: true, desc: Lang.YT_DESC}, (async (message, match) => { 
     if (match[1] === '') return await message.client.sendMessage(message.jid,Lang.NEED_WORDS,MessageType.text);    
     var reply = await message.client.sendMessage(message.jid,Lang.GETTING_VIDEOS,MessageType.text);
