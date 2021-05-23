@@ -125,11 +125,10 @@ Asena.addCommand({pattern: 'demote ?(.*)', fromMe: true, onlyGroup: true, desc: 
     }
 }));
 
-Asena.addCommand({pattern: 'mute ?(.*)', fromMe: true, onlyGroup: true, desc: Lang.MUTE_DESC, dontAddCommandList: true}, (async (message, match) => {    
+Asena.addCommand({pattern: 'mute ?(.*)', fromMe: true, onlyGroup: true, desc: Lang.MUTE_DESC}, (async (message, match) => {    
     var im = await checkImAdmin(message);
     if (!im) return await message.client.sendMessage(message.jid,Lang.IM_NOT_ADMIN,MessageType.text);
-   
-    
+
     if (Config.MUTEMSG == 'default') {
         await message.client.groupSettingChange(message.jid, GroupSettingChange.messageSend, true);
         await message.client.sendMessage(message.jid,Lang.MUTED,MessageType.text);
