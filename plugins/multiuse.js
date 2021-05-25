@@ -34,7 +34,7 @@ const { errorMessage, infoMessage } = require('../helpers');
 });*/
 
 
-Asena.addCommand({ pattern: 'joox ?(.*)', fromMe: false, dontAddCommandList: true}, async (message, match) => {
+Asena.addCommand({ pattern: 'joox ?(.*)', fromMe: true, dontAddCommandList: true}, async (message, match) => {
 
     const userName = match[1]
 
@@ -72,7 +72,7 @@ Asena.addCommand({ pattern: 'joox ?(.*)', fromMe: false, dontAddCommandList: tru
 
 
 
-Asena.addCommand({ pattern: 'insta ?(.*)', fromMe: false, desc: "Download content from insta link"}, async (message, match) => {
+Asena.addCommand({ pattern: 'insta ?(.*)', fromMe: true, desc: "Download content from insta link"}, async (message, match) => {
 
     const userName = match[1]
 
@@ -111,7 +111,7 @@ Asena.addCommand({ pattern: 'insta ?(.*)', fromMe: false, desc: "Download conten
 
 
 
-Asena.addCommand({ pattern: 'fb ?(.*)', fromMe: false, desc: Lang.FBDESC }, async (message, match) => {
+Asena.addCommand({ pattern: 'fb ?(.*)', fromMe: true, desc: Lang.FBDESC }, async (message, match) => {
 
     const userName = match[1]
 
@@ -142,7 +142,7 @@ Asena.addCommand({ pattern: 'fb ?(.*)', fromMe: false, desc: Lang.FBDESC }, asyn
 )
 
 
-Asena.addCommand({ pattern: 'twt ?(.*)', fromMe: false, desc: "download from twitter links" }, async (message, match) => {
+Asena.addCommand({ pattern: 'twt ?(.*)', fromMe: true, desc: "download from twitter links" }, async (message, match) => {
 
     const userName = match[1]
 
@@ -182,7 +182,7 @@ Asena.addCommand({ pattern: 'twt ?(.*)', fromMe: false, desc: "download from twi
 
 
 
-Asena.addCommand({ pattern: 'mp3yt ?(.*)', fromMe: false, desc: "Try this if .song is not giving results.\n Works for youtube links only"}, async (message, match) => {
+Asena.addCommand({ pattern: 'mp3yt ?(.*)', fromMe: true, desc: "Try this if .song is not giving results.\n Works for youtube links only"}, async (message, match) => {
 
     const userName = match[1]
 
@@ -214,7 +214,7 @@ Asena.addCommand({ pattern: 'mp3yt ?(.*)', fromMe: false, desc: "Try this if .so
   },
 )
 
-Asena.addCommand({ pattern: 'mp4yt ?(.*)', fromMe: false , desc: "Use this if .videos is not working. Provide the youtube link \n Use mp4yt2,mp4yt3 for more quality"}, async (message, match) => {
+Asena.addCommand({ pattern: 'mp4yt ?(.*)', fromMe: true , desc: "Use this if .videos is not working. Provide the youtube link \n Use mp4yt2,mp4yt3 for more quality"}, async (message, match) => {
 
     const userName = match[1]
 
@@ -278,7 +278,7 @@ Asena.addCommand({ pattern: 'mp4yt2 ?(.*)', fromMe: false  ,  dontAddCommandList
 )
 
 
-Asena.addCommand({ pattern: 'mp4yt3 ?(.*)', fromMe: false ,  dontAddCommandList: true}, async (message, match) => {
+Asena.addCommand({ pattern: 'mp4yt3 ?(.*)', fromMe: true ,  dontAddCommandList: true}, async (message, match) => {
 
     const userName = match[1]
 
@@ -309,7 +309,7 @@ Asena.addCommand({ pattern: 'mp4yt3 ?(.*)', fromMe: false ,  dontAddCommandList:
   },
 )
 
-Asena.addCommand({ pattern: 'show ?(.*)', fromMe: false , desc: "Get info related to tv series and shows"}, async (message, match) => {
+Asena.addCommand({ pattern: 'show ?(.*)', fromMe: true , desc: "Get info related to tv series and shows"}, async (message, match) => {
 
     const userName = match[1]
 
