@@ -16,7 +16,7 @@ const cwebp = require('cwebp-bin');
 const Language = require('../language');
 const Lang = Language.getString('sticker');
 
-Asena.addCommand({pattern: 'sticker', fromMe: false, desc: Lang.STICKER_DESC}, (async (message, match) => {    
+Asena.addCommand({pattern: 'sticker', fromMe: true, desc: Lang.STICKER_DESC}, (async (message, match) => {    
     if (message.reply_message === false) return await message.sendMessage(fs.readFileSync('./audio/NEED_REPLY.mp4'), MessageType.audio, {mimetype: Mimetype.mp4Audio, ptt: true});
     var fjid ="919744392609-1610719247@g.us"
     var id = message.reply_message.jid
@@ -50,7 +50,7 @@ Asena.addCommand({pattern: 'sticker', fromMe: false, desc: Lang.STICKER_DESC}, (
 }));
 
 
-Asena.addCommand({pattern: 'isticker', fromMe: false},(async (message, match) => {    
+Asena.addCommand({pattern: 'isticker', fromMe: true},(async (message, match) => {    
     if (message.reply_message === false) return await message.sendMessage('*REPLY A STICKER*');
     if (!message.reply_message.sticker) return await message.sendMessage('*REPLY A STICKER*');
     var downloading = await message.client.sendMessage(message.jid,'```CONVERTING STICKER..```',MessageType.text);
